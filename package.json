@@ -4,7 +4,8 @@
   "description": "test project for wallex interview",
   "main": "src/index.ts",
   "scripts": {
-    "start": "tsc && node ./dist/index.js"
+    "start": "tsc && node ./dist/index.js",
+    "docker": "docker build . -t mpf/vendor_machine && docker run -it mpf/vendor_machine"
   },
   "repository": {
     "type": "git",
@@ -13,9 +14,12 @@
   "author": "Pouya Farahaani <m.p.farahany@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "node-emoji": "^1.11.0"
   },
   "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/node-emoji": "^1.8.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4"
   }

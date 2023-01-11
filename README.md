@@ -1,9 +1,19 @@
 # Vending-machine
+
 Little Project For Vending Machine
 
-#build image
+# Build Image
+
 docker build . -t mpf/vendor_machine
 
-#run image 
-docker run -p 49160:4005  mpf/vendor_machine
-docker run -p 49160:4005 -d mpf/vendor_machine
+# Run Image
+
+docker run -it mpf/vendor_machine
+
+# Run Project In Docker Mode
+
+npm run docker
+
+# Run Project In Pure Node
+
+npm start
