@@ -1,75 +1,57 @@
-// attach env variables to process object
-import dotenv from "dotenv";
-dotenv.config();
-const { PRICE_OF_COFFEES, PRICE_OF_COCA } = process.env;
+import { stdin as input, stdout as output } from "node:process";
+import { coinValidation, productValidation } from "./utils";
+import { VendorMachine } from "./services";
+import * as readline from "node:readline";
+import { MainError } from "./components";
+import { ProductCode } from "./types";
+const NUMBER_OF_MACHINES = 6;
 
 // create a cli input and output for user interaction
-import * as readline from "node:readline";
-import { stdin as input, stdout as output } from "node:process";
 const rl = readline.createInterface({ input, output });
-
 rl.on("close", function () {
 	console.log("\n\x1b[31m", "Good Bye !", "\x1b[0m");
 });
 
-enum ProductCode {
-	Coffee = 11,
-	Coca = 12,
-}
+async function init() {
+	try {
+		// get coin from user and validate machine standard acceptance token if not get user back his money
+		const coin = Number(await getCoin());
+		coinValidation(coin);
 
-enum ProductPrice {
-	Coffee = Number(PRICE_OF_COFFEES),
-	Coca = Number(PRICE_OF_COCA),
-}
+		// get product code from user and validate if product exist or not back his money
+		const productNum = Number(await getProductNumber());
+		productValidation(productNum, coin);
 
-function returnProduct(productNum: number, coin: number) {
-	const product = ProductCode[productNum];
-	const price = ProductPrice[coin];
+		const VendorMachineServices = VendorMachine.getInstance(NUMBER_OF_MACHINES);
 
-	if (price != product) {
-		const shouldPay = productNum < 12 ? ProductPrice.Coffee : ProductPrice.Coca;
-		console.log(
-			"\n\x1b[31m",
-			`\nFor ${product}, you should pay ${shouldPay} , but you pay ${coin}\n`,
-			"\x1b[0m"
-		);
+		// check if coin is validate for choosen product or not if yes return product if not return money back
+		VendorMachineServices.handle(productNum, coin).then((responseProduct) => {
+			console.log("\n\x1b[32m", "=================================", "\x1b[0m");
+			console.log("\n\x1b[32m", "Your Product Is Ready :", "\x1b[0m");
+			console.log("\n\x1b[32m", responseProduct, "\x1b[0m");
+			console.log("\n\x1b[32m", "=================================", "\x1b[0m");
+		});
 
-		console.log("\n\x1b[32m", `Take Your Money : ${coin}`, "\x1b[0m", "\n");
-	} else {
-		console.log("\n\x1b[32m", product, "\x1b[0m");
-	}
-
-	init();
-}
-
-async function coinValidation(coin: number) {
-	if (!ProductPrice[coin]) {
-		console.log(
-			"\n\x1b[31m",
-			`Please Enter a valid Coin:\n ${ProductPrice.Coca} for Coca\n ${ProductPrice.Coffee} for Coffee`,
-			"\x1b[0m"
-		);
-
-		console.log("\n\x1b[32m", `Take Your Money : ${coin}`, "\x1b[0m");
-		await init();
+		console.log("------------- Machines Status -------------");
+		console.log(VendorMachineServices.machines);
+		console.log("-------------------------------------------");
+	} catch (e: any) {
+		if (e instanceof MainError) {
+			console.log("\n\x1b[31m", e.message, "\x1b[0m");
+			console.log(
+				"\n\x1b[32m",
+				`Take Your Money : ${e.detail.coin}`,
+				"\x1b[0m"
+			);
+		} else {
+			console.log(e);
+		}
+	} finally {
+		init();
 	}
 }
 
-async function productValidation(pNumber: number, coin: number) {
-	if (!ProductCode[pNumber]) {
-		console.log(
-			"\n\x1b[31m",
-			`"\nChoose Your Product : \nCoffee: ${ProductCode.Coffee} \nCoca: ${ProductCode.Coca}\n"`,
-			"\x1b[0m"
-		);
-
-		console.log("\n\x1b[32m", `Take Your Money : ${coin}`, "\x1b[0m");
-
-		await init();
-	}
-}
-
-function getCoin() {
+function getCoin(): Promise<string> {
 	return new Promise((resolve, reject) => {
 		rl.question("\nEnter Your Coin!\n", (coin: string) => {
 			return resolve(coin);
@@ -77,7 +59,7 @@ function getCoin() {
 	});
 }
 
-function getProductNumber() {
+function getProductNumber(): Promise<string> {
 	return new Promise((resolve, reject) => {
 		rl.question(
 			`\nChoose Your Product : \nCoca: ${ProductCode.Coca}  \nCoffee: ${ProductCode.Coffee}\n\n`,
@@ -86,19 +68,6 @@ function getProductNumber() {
 			}
 		);
 	});
-}
-
-async function init() {
-	// get coin from user and validate machine standard acceptance token if not get user back his money
-	const coin = await getCoin();
-	await coinValidation(Number(coin));
-
-	// get product code from user and validate if product exist or not back his money
-	const productNum = await getProductNumber();
-	await productValidation(Number(productNum), Number(coin));
-
-	// check if coin is validate for choosen product or not if yes return product if not return money back
-	returnProduct(Number(productNum), Number(coin));
 }
 
 init();

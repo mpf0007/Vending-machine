@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "tsc && node ./dist/index.js",
-    "docker": "docker build . -t mpf/vendor_machine && docker run -it mpf/vendor_machine"
+    "docker": "docker build . -t mpf/vendor_machine && docker run -it mpf/vendor_machine",
+    "test": "npm i && jest --config=jest.config.js --detectOpenHandles "
   },
   "repository": {
     "type": "git",
@@ -13,13 +14,12 @@
   },
   "author": "Pouya Farahaani <m.p.farahany@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.0.3",
-    "node-emoji": "^1.11.0"
-  },
+
   "devDependencies": {
+    "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
-    "@types/node-emoji": "^1.8.2",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4"
   }

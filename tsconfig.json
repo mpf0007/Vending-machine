@@ -16,9 +16,7 @@
         "node_modules/*"
       ]
     },
-    "types": [
-      "node"
-    ],
+    "types": ["node", "jest"],
     "typeRoots": [
       "node_modules/@types",
       "types"
@@ -27,5 +25,5 @@
   "include": [
     "src/**/*"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "test"]
 }
