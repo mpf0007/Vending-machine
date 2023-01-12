@@ -1,4 +1,4 @@
-# Vending Machine
+> # Vending Machine :
 
 ```
 this is a cli system that sell Coffee and Coca.
@@ -8,21 +8,27 @@ this is a cli system that sell Coffee and Coca.
 3) check your product with coin and compare price .
 4) if they were compatible choose a machine that is not busy
 5) machine will work for some minute and then give your product
+6) when your products print , the `insert your coin` message go up but you can actually put your coin :) 
 ```
-# Note 
-> becuase of some delaye time that making your product take , machine going to ask you to put another coin for your next order but as soon as your previous order getting ready , machine will print that for you. i used setTimeOut to simulation taking time to making coffee or coca . and in each time i will show you wich machines are not busy
 
-# Run Project In Docker Mode
+# Note :
 
-> npm run docker
+> ### I Use No npm Package , only for types and test process
 
-# Run Project In Pure Node
+>#### becuase of some delaye time that making your product take , machine going to ask you to put another coin for your next order but as soon as your previous order getting ready , machine will print that for you. i used setTimeOut to simulation taking time to making coffee or coca . and in each time i will show you wich machines are not busy
 
-> npm start
+# Run Project In Docker Mode :
 
-# Run Tests
+> ### npm run docker
 
-> npm run test
+# Run Project In Pure Node :
 
-# Bugs 
-> if all machines were busy , our thread will block and app will crash . we should getting orders in sequence and save them as queue and process them in order , but for keeping project simple i didnt do that , so dont make more than 6 order instantly , i set my setTimeOut on 10 second for each order 
+> ### npm start
+
+# Run Tests :
+
+> ### npm run test
+
+# Bugs :
+
+> ### if all machines were busy , our thread will block and app will crash . we should getting orders in sequence and save them as queue and process them in order , but for keeping project simple i didnt do that , so dont make more than 6 order instantly , i set my setTimeOut on 10 second for each order

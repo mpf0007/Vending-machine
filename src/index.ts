@@ -33,7 +33,7 @@ async function init() {
 		});
 
 		console.log("------------- Machines Status -------------");
-		console.log(VendorMachineServices.machines);
+		console.table(VendorMachineServices.machines);
 		console.log("-------------------------------------------");
 	} catch (e: any) {
 		if (e instanceof MainError) {
@@ -53,7 +53,7 @@ async function init() {
 
 function getCoin(): Promise<string> {
 	return new Promise((resolve, reject) => {
-		rl.question("\nEnter Your Coin!\n", (coin: string) => {
+		rl.question("Insert Your Coin:\n", (coin: string) => {
 			return resolve(coin);
 		});
 	});
